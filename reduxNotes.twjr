@@ -1,0 +1,660 @@
+\input texinfo @c -*- texinfo -*-
+
+@c ==================================================
+@c NAME:    reduxNotes.twjr
+@c VERSION: 2018-02-22T06:10:10 version 0.0.1
+@c DESC:    Various tutorials and articles
+@c BY:      LOLH
+@c NOTES:   
+@c ==================================================
+
+@c %**start of header
+@c edit
+@setfilename reduxNotes.info
+@c edit
+@settitle Redux Notes
+@c %**end of header
+
+@c ====================
+@c texiwebjr specials
+@c ====================
+@c Changes how xref titles are quoted.
+@dquotexrefs
+
+@c Lets braces in index entries work.
+@allowindexbraces
+
+@ifclear FORPRINT
+@pdflinkcolor
+@urllinkcolor
+@hideurls
+@end ifclear
+
+@c some special symbols
+@ifnottex
+@macro ii{text}
+@i{\text\}
+@end macro
+@end ifnottex
+
+@c merge the function and variable indexes into the concept index
+@c do so without the code font, and in the index entries do the
+@c font management ourselves.  Also merge in the chunk definition
+@c and reference entries, which jrweave creates for us.
+@ifnothtml
+@synindex fn cp
+@synindex vr cp
+@synindex cd cp
+@synindex cr cp
+@end ifnothtml
+
+@c ====================
+@c DOCUMENT CONSTANTS
+@c ====================
+@set UPDATE-MONTH FEBRUARY 2018
+@set EDITION 0.1
+@set AUTHOR LOLH
+@set TITLE Redux Notes
+@set SHORTTITLE Redux
+@set SUBTITLE From Various Sources
+@set COPYRIGHT_YEAR 2018
+@set COPYRIGHT_HOLDER LOLH
+@set DRAFT (Draft)
+
+@iftex
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end iftex
+@ifhtml
+@set DOCUMENT Web page
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifhtml
+@ifinfo
+@set DOCUMENT Info file
+@set CHAPTER major node
+@set APPENDIX major node
+@set SECTION minor node
+@set SUBSECTION node
+@end ifinfo
+@ifdocbook
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifdocbook
+
+@c ====================
+@c FINALOUT
+@c ====================
+@c If "finalout" is commented out, the printed output will show
+@c black boxes that mark lines that are too long.  Thus, it is
+@c unwise to comment it out when running a master in case there are
+@c overfulls which are deemed okay.
+
+@iftex
+@c |@finalout|
+@end iftex
+
+@c ====================
+@c SUMMARY & COPYRIGHT INFORMATION
+@c ====================
+@copying
+@c insert a short summary describing and identifying this document in a
+@c sentence or two, and add the copyright notice and copying permisions
+
+This document is @value{TITLE} @sp 2
+This document does @dots{}
+
+Copyright @copyright{} @value{COPYRIGHT_YEAR} LOLH @*
+by @value{COPYRIGHT_HOLDER} @*
+All Rights Reserved
+
+@quotation
+Permission is granted to @dots{}
+@end quotation
+
+@sp 2
+This is Edition @value{EDITION} of @cite{@value{TITLE}}.
+
+@c use @insertcopying later to 'emit' this copying information in a TeX
+@c or plain text document; add to the Top node for use in Info or HTML file
+@end copying
+
+@c ====================
+@c TITLEPAGE, COPYRIGHT PAGE, TOC PAGE, HEADINGS
+@c ====================
+@titlepage
+
+@title @value{TITLE}
+@subtitle @value{SUBTITLE}
+@c @subtitle Additional Subtitle
+@author @value{AUTHOR}
+
+@c place the copyright information on the backside of the titlepage
+@c (printed manual only)
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+
+Published by @dots{}
+
+@end titlepage
+@c page numbering and headings start after end of titlepage
+
+@iftex
+@headings off
+@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
+@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
+@end iftex
+
+@c TOC in the printed manual
+@c consider placing TOC after the main menu
+@c consider including summarycontents here or after main menu
+@c @summarycontents
+@contents
+
+@c ====================
+@c TOP NODE, MASTER MENU
+@c ====================
+@ifnottex
+@ifnotdocbook
+@ifnotxml
+@node Top
+@top Redux Notes
+
+@c @insertcopying
+@end ifnotxml
+@end ifnotdocbook
+@end ifnottex
+
+@c ====================
+@c START OF BODY
+@c ====================
+
+@c Preface and Foreward come right after Top node in 'unnumbered' sections
+@c consider commenting out Foreward and Preface
+@menu
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+@end detailmenu
+@end menu
+
+@c @node Foreword
+@c @unnumbered Foreword
+
+@c Foreward text...
+
+@c @node Preface
+@c @unnumbered Preface
+
+@c Preface text...
+
+@node Overview
+@unnumbered Overview
+
+Text and chapter by chapter description here.
+
+@node Conventions
+@unnumberedsec Conventions
+
+@c Copied mostly verbatim from the gawk manual.
+
+@cindex Texinfo document formatting language
+This @value{DOCUMENT} is written in an enhanced version of
+@uref{http://www.gnu.org/software/texinfo/, Texinfo},
+the GNU documentation formatting language.
+A single Texinfo source file is used to produce both the printed and online
+versions of a program's documentation.
+@ifnotinfo
+Because of this, the typographical conventions
+are slightly different than in other books you may have read.
+@end ifnotinfo
+
+Examples you would type at the command-line are preceded by the common
+shell primary and secondary prompts, @samp{$} and @samp{>}.  Input that
+you type is shown @kbd{like this}.  Output from the command is preceded
+by the glyph ``@print{}''.  This typically represents the command's
+standard output.  Error messages, and other output on the command's
+standard error, are preceded by the glyph ``@error{}''.  For example:
+
+@example
+$ @kbd{echo hi on stdout}
+@print{} hi on stdout
+$ @kbd{echo hello on stderr 1>&2}
+@error{} hello on stderr
+@end example
+
+@ifnotinfo
+In the text, command names appear in @code{this font}, while code segments
+appear in the same font and quoted, @samp{like this}.  Options look
+like this: @option{-f}.  Some things are emphasized @emph{like this},
+and if a point needs to be made strongly, it is done @strong{like this}.
+The first occurrence of a new term is usually its @dfn{definition} and
+appears in the same font as the previous occurrence of ``definition''
+in this sentence.  Finally, file names are indicated like this:
+@file{/path/to/our/file}.
+@end ifnotinfo
+
+@c @node Acknowledgements
+@c @unnumberedsec Acknowledgements
+
+@c Acknowledgments here...
+
+@c ====================
+@c MAIN BODY NODES
+@c ====================
+
+@node Introduction
+@unnumbered Introduction
+@cindex Abramov, Dan
+@cindex getting started
+@cindex egghead.io
+
+In this comprehensive tutorial, Dan Abramov - the creator of Redux - will
+teach you how to manage state in your React application with Redux.
+
+State  management  is absolutely  critical  in  providing users  with  a
+well-crafted experience with minimal bugs.
+
+It's also one  of the hardest aspects of a  modern front-end application
+to get right.
+
+Redux provides a solid, stable and  mature solution to managing state in
+your React  application. Through  a handful  of small,  useful patterns,
+Redux can transform your application from  a total mess of confusing and
+scattered  state,  into a  delightfully  organized,  easy to  understand
+modern JavaScript powerhouse.
+
+The principles of Redux aren't new,  but they are packaged and presented
+for  you  in  an  easy  to  use library  that  not  only  elevates  your
+applications, but  also improves your general  understanding of building
+JavaScript UIs.
+
+In this course, Dan Abramov will  show you the fundamentals of Redux, so
+that you can start using it to simplify your applications.
+
+Once you are finished with this course be sure to check out part 2:
+@url{https://egghead.io/courses/building-react-applications-with-idiomatic-redux,
+building-react-applications-with-idiomatic-redux}.
+
+@node Getting Started with Redux
+@chapter Getting Started with Redux by Dan Abramov, egghead.io
+
+@node The Single Immutable State Tree
+@section Redux: The Single Immutable State Tree
+@cindex state tree
+@cindex immutable state
+
+@subheading Redux Principles
+@cindex first principle of redux
+@cindex state tree
+
+@enumerate
+@item
+Entire state is represented as a single JavaScript object; all changes
+to state in Redux are explicit.  It is possible to keep track of every
+state change.  The state object is called the @dfn{state tree}.  The
+state is the minimal representation of the data in an app.
+@end enumerate
+
+@node Describing State Changes with Actions
+@section Describing State Changes with Actions
+@cindex state, changes
+@cindex actions
+@cindex dispatch
+@cindex state, read-only
+@cindex second principle of redux
+
+@subheading Redux Principles
+
+@enumerate 2
+@item
+The state tree is read-only: you cannot modify or write to it.  Anytime
+you want to change the state, you need to @dfn{dispatch} an @dfn{action}.
+An action is a plain JavaScript object describing the change.  An action
+is the minimal representation of the change to the data.  The only
+requirement of an action is that it have a type property which cannot be
+undefined.  You should use strings because strings are @i{serializable}.
+
+Different apps will have different types of actions.  A simple app like
+a plain counter would have only two actions, @var{increment} and
+@var{decrement}, and they would not have any additional information
+attached to them, because this is all that is needed to describe these
+changes.  
+
+@example
+@{ type: 'INCREMENT' @}
+@{ type: 'DECREMENT' @}
+@end example
+
+But for a more complex app, like a counter release example, there would
+be more actions: @var{add_counter}, @var{remove_counter}, and the
+@var{increment} and @var{decrement} actions have associated indices
+because the individual counter must be identified.
+
+@example
+@{ type: 'ADD_COUNTER' @}
+
+@{ type: 'REMOVE_COUNTER' @}
+
+@{ index: [NUMBER],
+  type: 'INCREMENT @}
+
+@{ index: [NUMBER],
+  type: 'DECREMENT' @}
+@end example
+
+The components don't know how the actions work; they just know that they
+must dispatch an action with a certain type, identification, and data.
+
+@end enumerate
+
+@node Pure and Impure Functions
+@section Pure and Impure Functions
+@cindex functions, pure
+@cindex functions, impure
+@cindex side effects
+@cindex predictable
+
+It is important that you understand the difference between @dfn{pure
+functions} and @dfn{impure functions}.
+
+@subheading Pure Functions
+
+@samp{Pure functions} are functions whose return values depend solely on
+the values of their arguments.  They do not have any observable side
+effects, such as network or database calls.  You can be confident that
+if you call a pure function with a set of arguments, you will always get
+back the same result.  Pure functions are predictable.  Pure functions
+do not modify values passed to them.
+
+@subheading Impure Functions
+
+@samp{Impure functions} may have side effects, like calling a database
+or network, or operating on the DOM, or they may modify the values that
+are passed to them.
+
+This is an important distinction because some of the funtions you write
+in Redux have to be @i{pure}, and you need to be mindful of that.
+
+@node The Reducer Function
+@section The Reducer Function
+@cindex reducer function
+@cindex state mutations, pure functions
+@cindex third principle of redux
+
+The UI or view layer is most predictable when it is described as a pure
+function of the application state.  This approach was pioneered by React
+but is being picked up by other frameworks, such as Ember and Angular.
+
+Redux complements this approach with another idea: the state mutations
+in your app need to be described as a pure function that takes the
+previous state and the action being dispatched and returns the next
+state of your application.  This is the third and final principle of
+Redux.
+
+Inside any Redux application, there is one particular function that
+takes the state of the whole application and the action being
+dispatched, and returns the next state of the whole application.  It is
+important that it does not modify the state given to it.  It has to be
+pure, so it has to return a new object.  Even in large applications
+there is a single function that manages how the next state is calculated
+based on the previous state of the whole application and the action
+being dispatched.  It does not have to be slow.
+
+@subheading Third Principle of Redux
+
+@enumerate 3
+@item
+To describe state mutations, you have to write a function that takes the
+previous state app, the action being dispatched, and returns the next
+state of app.  This function has to be pure.  This function is called
+the @dfn{Reducer}.
+
+@end enumerate
+
+@node Writing a Counter Reducer with Tests
+@section Writing a Counter Reducer with Tests
+@cindex reducer, writing
+
+The first function we will write will be the reducer for the
+@samp{counter} example.  A reducer takes @samp{state} and @samp{action}
+as arguments and returns the next @samp{state}.  However, before
+implementing the reducer function, we are going to make certain
+@samp{assertions} using Michael Jackson's @code{Expect} library, found
+at @url{https://github.com/mjackson/expect}.  (See also
+@url{https://github.com/facebook/jest, facebook/jest}.)  
+
+@c ====================
+@c APPENDICES
+@c ====================
+
+@node Appendix One
+@appendix Appendix One
+
+@node Meta Appendix
+@appendix Meta (Makefile) Appendix
+
+@node Makefile Definitions
+@appendixsec Makefile Initial Definitions
+
+@(Makefile@)=
+@<Makefile Constants@>
+@<Makefile Default Targets@>
+@<Makefile Tangle@>
+@<Makefile Weave@>
+@<Makefile Info@>
+@<Makefile Clean@>
+@<Makefile Dist Clean@>
+@<Makefile Directory Creation@>
+@<Makefile Move Hook@>
+@<Makefile Move JS To Source@>
+@<Makefile Move HTML@>
+@
+
+@node Makefile Constants
+@appendixsubsec Makefile Constant Definitions
+
+@<Makefile Constants@>=
+@<Makefile Directory Definitions@>
+@<Makefile Filename Definitions@>
+@
+
+@node Directory Definitions
+@appendixsubsubsec Makefile Directory Definitions
+
+@<Makefile Directory Definitions@>=
+PREFIX := .
+SOURCE_DIR := ${PREFIX}/src
+PUBLIC_DIR := ${PREFIX}/public
+HTML_DIR := ${PREFIX}/html
+
+@
+
+@node Filename Definitions
+@appendixsubsubsec Makefile Filename Definitions
+
+@<Makefile Filename Definitions@>=
+FILENAME := reduxNotes
+TWJR_FILENAME := ${FILENAME}.twjr
+TEXI_FILENAME := ${FILENAME}.texi
+INFO_FILENAME := ${FILENAME}.info
+
+@
+
+@node Makefile Default Targets
+@appendixsubsec Makefile Default Targets
+
+@<Makefile Default Targets@>=
+.Phony : all
+all : tangle weave
+
+@
+
+@node Makefile Tangle
+@appendixsubsubsec Makefile Tangle
+
+@<Makefile Tangle@>=
+.Phony : tangle
+tangle :
+	jrtangle ${TWJR_FILENAME}
+
+@
+
+@node Makefile Weave
+@appendixsubsubsec Meta Weave
+
+@<Makefile Weave@>=
+.Phony : weave
+weave : ${TEXI_FILENAME}
+
+${TEXI_FILENAME} : ${TWJR_FILENAME}
+	jrweave ${TWJR_FILENAME} > ${TEXI_FILENAME}
+
+@
+
+@node Makefile Info
+@appendixsubsubsec Makefile Info
+
+@<Makefile Info@>=
+.Phony : info
+info : ${INFO_FILENAME}
+
+${INFO_FILENAME} : ${TEXI_FILENAME}
+	makeinfo ${TEXI_FILENAME}
+
+@
+
+@node Makefile Clean Targets
+@appendixsubsec Makefile Clean Targets
+
+@node Makefile Clean
+@appendixsubsubsec Makefile Clean Definition
+
+@<Makefile Clean@>=
+.Phony : clean
+clean :
+	rm -f *~
+
+@
+
+@node Makefile Dist Clean
+@appendixsubsubsec Meta Dist Clean Definition
+
+@<Makefile Dist Clean@>=
+.Phony : dist-clean
+dist-clean : clean
+	rm -f *.texi
+	rm -f *.info
+
+@
+
+@node Makefile Directory Creation
+@appendixsubsec Makefile Directory Creation Targets
+
+@<Makefile Directory Creation@>=
+.Phony : ${SOURCE_DIR}
+${SOURCE_DIR} :
+	mkdir -p ${SOURCE_DIR}
+
+.Phony : ${PUBLIC_DIR}
+${PUBLIC_DIR} :
+	mkdir -p ${PUBLIC_DIR}
+
+.Phony : ${HTML_DIR}
+${HTML_DIR} :
+	mkdir -p ${HTML_DIR}
+
+@
+
+@node Makefile Move Targets
+@appendixsubsec Makefile Move Targets
+
+@node Makefile Move Hook
+@appendixsubsubsec Makefile Move Hook
+
+Use this hook for moving files to a different directory
+than Source; it will execute just prior to the next
+code block moving all .js files to Source.
+
+@<Makefile Move Hook@>=
+@
+
+@node Makefile Move JS
+@appendixsubsubsec Makefile Move JS To Source
+
+@<Makefile Move JS To Source@>=
+.Phony : move-js-to-source
+move-js-to-source : | ${SOURCE_DIR}
+	find ${PREFIX} -depth=1 -name \*.js -exec mv {} ${SOURCE_DIR} \;
+
+@
+
+@node Makefile Move HTML
+@appendixsubsubsec Makefile Move HTML
+
+@<Makefile Move HTML@>=
+.Phony : move-html
+move-html : | ${HTML_DIR}
+	find ${PREFIX} -depth=1 -name \*.html -exec mv {} ${HTML_DIR}\;
+
+@
+
+@node Code Chunk Summaries
+@appendix Code Chunk Summaries
+
+This @value{APPENDIX} presents alphabetical lists of
+all the file definitions, the code chunk definitions,
+and the code chunk references.
+
+@node File Definitions
+@appendixsec Source File Definitions
+
+@print_file_defs
+
+@node Code Chunk Definitions
+@appendixsec Code Chunk Definitions
+
+@print_code_defs
+
+@node Code Chunk References
+@appendixsec Code Chunk References
+
+@print_code_refs
+
+@c ====================
+@c BIBLIOGRAPHY; INDEX; END
+@c ====================
+
+@node Bibliography
+@unnumbered Bibliography
+
+@node Concept Index
+@unnumbered Index
+
+@node Index
+@unnumbered Index
+
+@printindex cp
+
+@bye
+
+@c ====================
+@c TODOs
+@c ====================
+
+1. Create a script to fill in named variables
+1.1 twjr
+1.1.1 init [--dir <directory>]
+1.1.2 config
+1.1.3 weave [--info --pdf --html --xml --docbook]
+1.1.4 tangle [--file <filename>]
