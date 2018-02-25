@@ -2,7 +2,7 @@
 
 @c ==================================================
 @c NAME:    reduxNotes.twjr
-@c VERSION: 2018-02-22T06:10:10 version 0.0.1
+@c VERSION: 2018-02-25T09:41:19 version 0.0.2
 @c DESC:    Various tutorials and articles
 @c BY:      LOLH
 @c NOTES:   
@@ -453,6 +453,7 @@ at @url{https://github.com/mjackson/expect}.  (See also
 @<Makefile Tangle@>
 @<Makefile Weave@>
 @<Makefile Info@>
+@<Makefile Sections@>
 @<Makefile Clean@>
 @<Makefile Dist Clean@>
 @<Makefile Directory Creation@>
@@ -474,9 +475,10 @@ at @url{https://github.com/mjackson/expect}.  (See also
 
 @<Makefile Directory Definitions@>=
 PREFIX := .
-SOURCE_DIR := ${PREFIX}/src
-PUBLIC_DIR := ${PREFIX}/public
-HTML_DIR := ${PREFIX}/html
+MODULE := ${PREFIX}/GSWR
+SOURCE_DIR := ${MODULE}/src
+PUBLIC_DIR := ${MODULE}/public
+HTML_DIR := ${MODULE}/html
 
 @
 
@@ -496,7 +498,7 @@ INFO_FILENAME := ${FILENAME}.info
 
 @<Makefile Default Targets@>=
 .Phony : all
-all : tangle weave
+all : tangle weave sections
 
 @
 
@@ -505,8 +507,10 @@ all : tangle weave
 
 @<Makefile Tangle@>=
 .Phony : tangle
-tangle :
+tangle : | tangled
+tangled :
 	jrtangle ${TWJR_FILENAME}
+	touch tangled
 
 @
 
@@ -555,6 +559,8 @@ clean :
 dist-clean : clean
 	rm -f *.texi
 	rm -f *.info
+	rm -f tangled
+	rm -rf ${MODULE}
 
 @
 
@@ -562,18 +568,60 @@ dist-clean : clean
 @appendixsubsec Makefile Directory Creation Targets
 
 @<Makefile Directory Creation@>=
-.Phony : ${SOURCE_DIR}
+.Phony : module
+module : ${MODULE}
+${MODULE} :
+	mkdir -p ${MODULE}
+
+.Phony : source_dir
+source_dir : ${SOURCE_DIR}
 ${SOURCE_DIR} :
 	mkdir -p ${SOURCE_DIR}
 
-.Phony : ${PUBLIC_DIR}
+.Phony : public_dir
+public_dir : ${PUBLIC_DIR}
 ${PUBLIC_DIR} :
 	mkdir -p ${PUBLIC_DIR}
 
-.Phony : ${HTML_DIR}
+.Phony : html_dir
+html_dir : ${HTML_DIR}
 ${HTML_DIR} :
 	mkdir -p ${HTML_DIR}
 
+@
+
+@node Makefile Sections
+@appendixsubsec Makefile Sections
+
+Sections is called by @code{make all} or just @code{make}.
+
+Sections calls each section in turn.
+
+@<Makefile Sections@>=
+ 
+# MAKEFILE SECTIONS
+# =================
+.Phony : sections
+sections : section05
+
+@<Makefile Section05@>
+@
+
+@node Makefile Section05
+@appendixsubsubsec Makefile Section05
+
+@<Makefile Section01@>=
+ 
+# MAKEFILE SECTION05
+# ------------------
+.Phony : section05
+section05 : | module
+section05 : package.json
+
+.Phony : package.json
+package.json : | module ${MODULE}/package.json
+${MODULE}/package.json :
+	cd ${MODULE} && yarn init --yes
 @
 
 @node Makefile Move Targets
