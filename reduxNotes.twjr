@@ -2,7 +2,7 @@
 
 @c ==================================================
 @c NAME:    reduxNotes.twjr
-@c VERSION: 2018-02-28T04:58:07 version 0.0.3
+@c VERSION: 2018-03-01T07:48:38 version 0.0.4
 @c DESC:    Various tutorials and articles
 @c BY:      LOLH
 @c NOTES:   
@@ -428,11 +428,28 @@ the @dfn{Reducer}.
 
 The first function we will write will be the reducer for the
 @samp{counter} example.  A reducer takes @samp{state} and @samp{action}
-as arguments and returns the next @samp{state}.  However, before
-implementing the reducer function, we are going to make certain
-@samp{assertions} using Michael Jackson's @code{Expect} library, found
-at @url{https://github.com/mjackson/expect}.  (See also
-@url{https://github.com/facebook/jest, facebook/jest}.)  
+as arguments and returns the next @samp{state}.
+
+@(section_05-reducer.js@)=
+function counter(state, action) {
+  return state;
+}
+@
+
+However, before implementing the reducer function, we are going to make
+certain @samp{assertions} using Michael Jackson's @code{Expect} library,
+found at @url{https://github.com/mjackson/expect}.  (See also
+@url{https://github.com/facebook/jest, facebook/jest}.)
+
+First, we will @samp{assert} that when the state of the @code{counter}
+is @samp{zero} and you pass an @code{INCREMENTE} action, it will return
+@samp{one}.
+
+@(section_05-tests-reducer_tests.test.js@)=
+expect(
+  counter(0, { type: 'INCREMENT' })
+).toEqual(1);
+@
 
 @c ====================
 @c APPENDICES
@@ -477,12 +494,13 @@ at @url{https://github.com/mjackson/expect}.  (See also
 PREFIX := .
 MODULE := ${PREFIX}/GSWR
 SOURCE_DIR := ${MODULE}/src
-TEST_DIR := ${MODULE}/test
+TESTS_DIR := ${MODULE}/tests
 PUBLIC_DIR := ${MODULE}/public
 HTML_DIR := ${SOURCE_DIR}/html
 CSS_DIR := ${SOURCE_DIR}/css
 
 DIRS := ${PREFIX} ${MODULE} ${SOURCE_DIR} ${TEST_DIR} ${PUBLIC_DIR} ${HTML_DIR} ${CSS_DIR}
+
 @
 
 @node Filename Definitions
@@ -564,6 +582,7 @@ dist-clean : clean
 	rm -f *.info
 	rm -f tangled
 	rm -rf ${MODULE}
+	rm -f *.{js,html,css}
 
 @
 
@@ -614,10 +633,10 @@ source_dir : ${SOURCE_DIR}
 ${SOURCE_DIR} :
 	mkdir -p ${SOURCE_DIR}
 
-.Phony : test_dir
-test_dir : ${TEST_DIR}
-${TEST_DIR} :
-	mkdir -p ${TEST_DIR}
+.Phony : tests_dir
+tests_dir : ${TESTS_DIR}
+${TESTS_DIR} :
+	mkdir -p ${TESTS_DIR}
 
 .Phony : public_dir
 public_dir : ${PUBLIC_DIR}
@@ -650,36 +669,39 @@ Sections calls each section in turn.
 # MAKEFILE SECTIONS
 # =================
 .Phony : sections
-sections : section05
+sections : section_05
 
-@<Makefile Section05@>
+@<Makefile Section_05@>
 @
 
-@node Makefile Section05
-@appendixsubsubsec Makefile Section05
+@node Makefile Section_05
+@appendixsubsubsec Makefile Section_05
 
 Section 05 creates several directories:
 
 @itemize
 @item
-@file{module}
+@file{prefix/module}
 @item
-@file{source}
+@file{prefix/module/source}
 @item
-@file{test}
+@file{prefix/module/tests}
+@item
+@file{section_05} inside of @file{source} and @file{tests}
 @end itemize
 
 and initializes a @file{package.json} in the @file{module} directory.
 It will then add the @file{expect} library as a @code{dev-dependency}.
+Next it creates @file{section_05} directories in source and tests.
 It then moves all @file{sec05} files into  their respective directories.
 
-@<Makefile Section05@>=
+@<Makefile Section_05@>=
  
-# MAKEFILE SECTION05
+# MAKEFILE SECTION_05
 # ------------------
-.Phony : section05
-section05 : | module source_dir test_dir
-section05 : package.json
+.Phony : section_05
+section_05 : tangle | module source_dir tests_dir section_05_dirs move_section_05_files
+section_05 : package.json
 
 .Phony : package.json
 package.json : | module ${MODULE}/package.json
@@ -688,7 +710,32 @@ ${MODULE}/package.json :
 	  cd ${MODULE};\
 	  yarn init --yes;\
 	  yarn add --dev expect;\
-	}\
+	}
+
+SECTION_05_DIR := section_05
+
+.Phony : section_05_dirs
+section_05_dirs : | ${SOURCE_DIR}/${SECTION_05_DIR} ${TESTS_DIR}/${SECTION_05_DIR}
+${SOURCE_DIR}/${SECTION_05_DIR} ${TESTS_DIR}/${SECTION_05_DIR} :
+	{\
+	  mkdir -p ${SOURCE_DIR}/${SECTION_05_DIR};\
+	  mkdir -p ${TESTS_DIR}/${SECTION_05_DIR};\
+	}
+
+.Phony : move_section_05_tests
+move_section_05_tests : tangle section_05_dirs ${TESTS_DIR}/${SECTION_05_DIR}/*.js
+${TESTS_DIR}/${SECTION_05_DIR}/*.js :
+	for file in section_05-tests-*;\
+	do mv $${file} ${TESTS_DIR}/${SECTION_05_DIR}/$${file#section_05-tests-}; done
+
+.Phony : move_section_05_js
+move_section_05_js : tangle section_05_dirs ${SOURCE_DIR}/${SECTION_05_DIR}/*.js
+${SOURCE_DIR}/${SECTION_05_DIR}/*.js :
+	for file in section_05-*;\
+	do mv $${file} ${SOURCE_DIR}/${SECTION_05_DIR}/$${file#section_05-}; done
+
+.Phony : move_section_05_files
+move_section_05_files : move_section_05_tests move_section_05_js
 
 @
 
@@ -711,7 +758,9 @@ code block moving all .js files to Source.
 @<Makefile Move JS To Source@>=
 .Phony : move-js-to-source
 move-js-to-source : | ${SOURCE_DIR}
-	find ${PREFIX} -depth=1 -name \*.js -exec mv {} ${SOURCE_DIR} \;
+	[ ${PREFIX}/*.js ] && \
+	find ${PREFIX} -depth 1 -name \*.js -exec mv {} ${SOURCE_DIR} \; \
+	|| :
 
 @
 
